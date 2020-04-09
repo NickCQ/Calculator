@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Etch-a-Sketch</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="CSS/reset.css">
+    <link rel="stylesheet" type="text/css" href="CSS/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+       <div>
+           Calculator
+       </div>
+    </header>
+
+    <main>
+        <div class='container'>
+            <div class='screen'>
+                <div class="operation"></div>
+                <div class="result"></div>
+            </div>
+            <div class='numbers'>1</div>
+            <div class='numbers'>2</div>
+            <div class='numbers'>3</div>
+            <div class='operator'>+</div>
+            <div class='DEL'>DEL</div>
+            <div class='AC'>AC</div>
+            <div class='numbers'>4</div>
+            <div class='numbers'>5</div>
+            <div class='numbers'>6</div>
+            <div class='operator'>-</div>
+            <div class='numbers'>7</div>
+            <div class='numbers'>8</div>
+            <div class='numbers'>9</div>
+            <div class='operator'>*</div>
+            <div class='numbers'>.</div>
+            <div class='numbers'>0</div>
+            <div class='operator'>=</div>
+            <div class='operator'>/</div>
+            
+        </div>
+    </main>
+    
+    <script>
+        numbers=Array.from(document.getElementsByClassName('numbers'));
+        operators=Array.from(document.getElementsByClassName('operator'));
+        operation=document.querySelector('.operation');
+        del=document.querySelector('.DEL');
+        ac=document.querySelector('.AC');
+        result=document.querySelector('.result');
+        
+
+        function split(string){
+            numbop=[];
+            for(i=0;i<string.length;i++){
+                    if(string[i]=='+'||string[i]=='-'||string[i]=='/'||string[i]=='*'){
+                        numbop.push(string.slice(0,i));
+                        string=string.slice(i);
+                        numbop.push(string.slice(0,1));
+                        string=string.slice(1);
+                        i=0;
+                } 
+            }
+            numbop.push(string.slice(0,string.length))
+            return numbop
+        }
+
+        function prodiv(numbop){
+            for(p=0;p<numbop.length;p++){
+                if(numbop[p]=='/'||numbop[p]=='*'){
+                    num1=parseFloat(numbop[p-1])
+                    num2=parseFloat(numbop[p+1])
+                    if(numbop[p]=='/'){
+                        newnum=num1/num2
+                    } else if(numbop[p]=='*'){
+                        newnum=num1*num2
+                    }
+                    numbop.splice(p-1,3,newnum)
+                    p=0
+                }
+            }
+        return numbop
+        }
+
+        function sumres(numbop){
+            for(p=0;p<numbop.length;p++){
+                if(numbop[p]=='+'||numbop[p]=='-'){
+                    num1=parseFloat(numbop[p-1])
+                    num2=parseFloat(numbop[p+1])
+                    if(numbop[p]=='+'){
+                        newnum=num1+num2
+                    } else if(numbop[p]=='-'){
+                        newnum=num1-num2
+                    }
+                    numbop.splice(p-1,3,newnum)
+                    p=0
+                }
+            }
+        return numbop
+        }
+
+        function operate(){
+            try{numbop=split(operation.innerText);
+            prodiv(numbop);
+            sumres(numbop);
+            if(numbop.join('')=='NaN'||numbop.join('')==Infinity||numbop.join('')==undefined){
+                alert('Wait...')
+            } else{result.innerText=numbop.join('');}
+            } 
+            catch(error){
+                alert('Wait...')
+            }
+            
+
+        };
+
+        numbers.forEach(number => {
+            number.addEventListener('click',()=>
+            {
+                if(number.innerText=='.'&&operation.innerText[operation.innerText.length-1]=='.')return
+                if(number.innerText=='.'){
+                    if(!operation.innerText.includes('.')||operation.innerText.lastIndexOf('.')<operation.innerText.lastIndexOf('+')||operation.innerText.lastIndexOf('.')<operation.innerText.lastIndexOf('-')||operation.innerText.lastIndexOf('.')<operation.innerText.lastIndexOf('/')||operation.innerText.lastIndexOf('.')<operation.innerText.lastIndexOf('*')){
+                        operation.innerText+=number.innerText
+                    }
+                    
+                } else{
+                    operation.innerText+=number.innerText
+                }
+                
+            })
+    }
+        );
+        del.addEventListener('click',()=>{
+            num=operation.innerText.split('');
+            num.pop();
+            operation.innerText=num.join('');
+        });
+        ac.addEventListener('click',()=>{
+            operation.innerText=''
+            result.innerText=''
+        });
+
+        operators.forEach(operator=>{
+            
+            operator.addEventListener('click',()=>{
+                if(operation.innerText=='')return
+                if (operator.innerText=='='){
+                    operate();
+                }
+                else if (['+','-','*','/'].includes(operation.innerText[operation.innerText.length-1])){
+                    operation.innerText=operation.innerText.slice(0,-1)+operator.innerText;
+                }
+                else {
+                    operation.innerText+=operator.innerText
+                }
+            })
+            
+        });
+
+        function numberskey(number){
+            if(number.innerText=='.'&&operation.innerText[operation.innerText.length-1]=='.')return
+                if(number.innerText=='.'){
+                    if(!operation.innerText.includes('.')||operation.innerText.lastIndexOf('.')<operation.innerText.lastIndexOf('+')||operation.innerText.lastIndexOf('.')<operation.innerText.lastIndexOf('-')||operation.innerText.lastIndexOf('.')<operation.innerText.lastIndexOf('/')||operation.innerText.lastIndexOf('.')<operation.innerText.lastIndexOf('*')){
+                        operation.innerText+=number.innerText
+                    }
+                    
+                } else{
+                    operation.innerText+=number.innerText
+                }
+        };
+
+        function operatorskey(operator){
+            if(operation.innerText=='')return
+                if (event.key=='Enter'){
+                    operate();
+                }
+                else if (['+','-','*','/'].includes(operation.innerText[operation.innerText.length-1])){
+                    operation.innerText=operation.innerText.slice(0,-1)+operator.innerText;
+                }
+                else {
+                    operation.innerText+=operator.innerText
+                }
+
+        };
+
+        function delkey(){
+            num=operation.innerText.split('');
+            num.pop();
+            operation.innerText=num.join('');
+
+        };
+
+        window.addEventListener('keydown',()=>{
+            operators.forEach(operator=>{
+                if(event.key==operator.innerText||event.key=='Enter'){
+                    operatorskey(operator);
+                }  
+            });
+
+            numbers.forEach(number=>{
+                if(event.key==number.innerText){
+                    numberskey(number);
+                }
+            });
+
+            if(event.key=='Backspace'){
+                    delkey();
+                };
+              
+        })
+
+
+
+    </script>
+</body>
+</html>

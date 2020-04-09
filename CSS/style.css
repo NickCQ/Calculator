@@ -1,0 +1,161 @@
+body,html{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-flow: column;
+    font-family: 'Press Start 2P', cursive;
+    background-image: linear-gradient(to bottom right, rgb(108, 137, 201), rgb(126, 236, 203));
+
+}
+
+header{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 150px;
+}
+
+main{
+    position: relative;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.operation{
+    grid-area: 'oper';
+}
+.result{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.screen{
+    display: grid;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    grid-template-areas: 'oper';
+    grid-area: screen;
+    background-image: linear-gradient(to bottom right, rgb(187, 189, 189), rgb(241, 229, 229));
+}
+
+
+.screen div{
+    display: flex;
+    font-size: 25px;
+    align-items: center;
+    height: 50px;
+
+}
+
+.numbers ,.operator{
+    position: relative;
+    display: flex;
+    background-image: linear-gradient(to bottom right, rgb(116, 155, 158), rgb(111, 204, 120));
+    justify-content: center;
+    align-items: center;
+    transition:2s ease;
+    z-index: 1;
+}
+
+.operator{
+    background-image: linear-gradient(to bottom right, rgb(76, 160, 167), rgb(41, 136, 51));
+}
+
+.numbers::before ,.operator::before{
+    position: absolute;
+    content: "";
+    border-radius: 13px;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+    background-image: linear-gradient(to bottom right, rgb(45, 134, 175), rgb(52, 158, 132));
+    opacity: 0;
+    transition: opacity 0.5s linear;
+}
+
+.numbers:hover::before, .operator:hover::before{
+    opacity: 1;
+}
+
+.DEL, .AC{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: linear-gradient(to bottom right, chocolate, rgb(238, 199, 125));
+    z-index: 1;
+}
+
+.DEL::before, .AC::before{
+    position: absolute;
+    content: "";
+    border-radius: 13px;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: -1;
+    background-image: linear-gradient(to bottom right, rgb(218, 81, 81), rgb(201, 169, 159));
+    opacity: 0;
+    transition: opacity 0.5s linear;
+}
+
+.DEL:hover::before, .AC:hover::before{
+    opacity: 1;
+}
+
+.DEL{
+    grid-area: del;
+}
+
+.AC{
+    grid-area: AC;
+}
+
+.DEL:hover, .AC:hover{
+    background-color: rgb(233, 166, 66);
+}
+
+.numbers:hover, .operator:hover{
+    background-color: yellowgreen;
+}
+
+
+main .container{
+    background-image: linear-gradient(to bottom right, bisque, rgb(240, 235, 170));
+    width: 500px;
+    display: grid;
+    height: 500px;
+    grid-template-areas: 'screen screen screen screen screen'
+                         'screen screen screen screen screen'
+                         '. . . . del'
+                         '. . . . del'
+                         '. . . . AC'
+                         '. . . . AC'
+                         ;
+    grid-gap: 5px;
+    padding: 10px;
+}
+
+.container, .screen, .numbers, .operator, .DEL, .AC{
+    border-radius: 15px;
+    border:solid rgb(109, 96, 96);
+}
+
+.numbers,.DEL,.operator,.AC{
+    box-shadow: 0 6px #999;
+}
+
+
+.numbers:active,.DEL:active,.operator:active,.AC:active{
+    box-shadow: 0 0px #999;
+    transform: translateY(6px);
+}
+
